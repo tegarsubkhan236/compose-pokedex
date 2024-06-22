@@ -49,6 +49,7 @@ import coil.request.ImageRequest
 import com.tegarsubkhan236.compose.pokedex.R
 import com.tegarsubkhan236.compose.pokedex.data.model.PokedexListEntry
 import com.tegarsubkhan236.compose.pokedex.presentation.common.RetrySection
+import com.tegarsubkhan236.compose.pokedex.presentation.common.SearchBar
 import com.tegarsubkhan236.compose.pokedex.presentation.theme.RobotoCondensed
 
 @Composable
@@ -72,49 +73,6 @@ fun PokeHomeScreen() {
         }
         Spacer(modifier = Modifier.height(16.dp))
         PokedexList()
-    }
-}
-
-@Composable
-private fun SearchBar(
-    modifier: Modifier = Modifier,
-    hint: String = "",
-    onSearch: (String) -> Unit
-) {
-    var text by remember {
-        mutableStateOf("")
-    }
-    var isHintDisplayed by remember {
-        mutableStateOf(hint != "")
-    }
-
-    Box(modifier = modifier) {
-        BasicTextField(
-            value = text,
-            onValueChange = {
-                text = it
-                onSearch(it)
-            },
-            maxLines = 1,
-            singleLine = true,
-            textStyle = TextStyle(color = Color.Black),
-            modifier = Modifier
-                .fillMaxWidth()
-                .shadow(5.dp, CircleShape)
-                .background(Color.White, CircleShape)
-                .padding(horizontal = 20.dp, vertical = 20.dp)
-                .onFocusChanged {
-                    isHintDisplayed = it.isFocused
-                }
-        )
-        if (isHintDisplayed) {
-            Text(
-                text = hint,
-                color = Color.LightGray,
-                modifier = Modifier
-                    .padding(horizontal = 20.dp, vertical = 20.dp)
-            )
-        }
     }
 }
 
