@@ -42,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
@@ -53,7 +54,9 @@ import com.tegarsubkhan236.compose.pokedex.presentation.common.SearchBar
 import com.tegarsubkhan236.compose.pokedex.presentation.theme.RobotoCondensed
 
 @Composable
-fun PokeHomeScreen() {
+fun PokeHomeScreen(
+    viewModel: PokemonHomeViewModel = hiltViewModel()
+) {
     Column {
         Spacer(modifier = Modifier.height(20.dp))
         Image(
@@ -69,7 +72,7 @@ fun PokeHomeScreen() {
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-
+            viewModel.searchPokemonList(it)
         }
         Spacer(modifier = Modifier.height(16.dp))
         PokedexList()
@@ -170,6 +173,7 @@ private fun PokedexList(
     val endReached by remember { viewModel.endReached }
     val loadError by remember { viewModel.loadError }
     val isloading by remember { viewModel.isloading }
+    val isSearching by remember { viewModel.isSearching }
 
     LazyColumn(
         contentPadding = PaddingValues(16.dp)
@@ -180,7 +184,7 @@ private fun PokedexList(
             pokemonList.size / 2 + 1
         }
         items(itemCount) {
-            if (it >= itemCount - 1 && !endReached && !isloading) {
+            if (it >= itemCount - 1 && !endReached && !isloading && !isSearching) {
                 viewModel.loadPokemonPaginated()
             }
             PokedexRow(rowIndex = it, entries = pokemonList)
